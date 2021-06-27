@@ -4,7 +4,6 @@ import os
 import time
 from tabuleiro import Tabuleiro
 
-
 HOST = '127.0.0.1' 
 PORT = 5000       
 BUFFER_SIZE = 1024 
@@ -15,7 +14,6 @@ server_address = (HOST, PORT)
 sock.bind(server_address)
 
 sock.listen(1)
-
 
 os.system('cls' if os.name == 'nt' else 'clear')
 print('________________________________________________ ')
@@ -40,13 +38,13 @@ while opcaoGame == 0:
     print('\n____________________________________________ ')
     print('Jogador: '+ name)
     if icon == 1 :
-        print('Icone escolhido: X')
+        print('Peça escolhida: X')
     else:
-        print('Icone escolhido: Bola')
+        print('Peça escolhida: Bola')
 
 
     print('\n\nProximo passo, selecione a opcao de jogo:')
-    opcaoGame = int(input('\n\nDigite 1 - Jogo multiplayer\nDigite 2 - Jogo singleplayer\n\nDigite a opção desejada: '))
+    opcaoGame = int(input('\nDigite 1 - Jogar com um amigo\nDigite 2 - Jogar contra o computador\n\nDigite a opção desejada: '))
     if opcaoGame < 1 or opcaoGame > 2:
         opcaoGame = 0
         print('Opção inválida')
@@ -76,7 +74,7 @@ while opcaoGame == 1:
         player2 = jogador2, 'O' if icon == 1 else 'X',vitorias2
 
         if random.randint(1,2) == 1:
-            tabuleiro.mostrarTabuleiro('Jogador da vez >>>>>>  ', empate, player1, player2, name)
+            tabuleiro.mostrarTabuleiro('Sua vez de jogar ', empate, player1, player2, '<<<<<')
             posicao_valida = True
             while  posicao_valida:
                 print('Faça a sua jogada:\n')
@@ -97,6 +95,7 @@ while opcaoGame == 1:
             connection.sendall(tabuleiro.salvarJogada().encode('utf-8'))
         else:
             tabuleiro.mostrarTabuleiro('Jogador da vez >>>>>>  ', empate, player1, player2, jogador2)
+            print('\nAguarde a jogada do oponente...')
             connection.sendall(tabuleiro.salvarJogada().encode('utf-8'))
 
         cont = 1
@@ -110,7 +109,7 @@ while opcaoGame == 1:
             tabuleiro.restaurar(data.decode('utf-8'))
             resposta = tabuleiro.verificarVencedor(player2[1])
             if resposta == 'empate':
-                tabuleiro.mostrarTabuleiro( '>>>>>>>',empate, player1, player2,'EMPATE')
+                tabuleiro.mostrarTabuleiro( '>>>>>>>>>> ',empate, player1, player2,'EMPATE <<<<<<<<<<')
                 print("\nDeseja jogar novamente ?\n")
                 opcao = int(input("\nDigite 1 para jogar novamente, digite 2 para sair: "))
                 contJogador2 = connection.recv(BUFFER_SIZE)
@@ -130,7 +129,7 @@ while opcaoGame == 1:
                     break
 
             elif resposta == False:
-                tabuleiro.mostrarTabuleiro('Jogador da vez >>>>>>  ', empate, player1, player2, name)
+                tabuleiro.mostrarTabuleiro('Sua vez de jogar ', empate, player1, player2, '<<<<<')
             
                 posicao_valida = True
                 while  posicao_valida:
@@ -171,7 +170,7 @@ while opcaoGame == 1:
 
             resposta = tabuleiro.verificarVencedor(player1[1])
             if resposta == 'empate':
-                tabuleiro.mostrarTabuleiro( '>>>>>>>',empate, player1, player2,'EMPATE')
+                tabuleiro.mostrarTabuleiro( '>>>>>>>>>> ',empate, player1, player2,'EMPATE <<<<<<<<<<')
                 connection.sendall(tabuleiro.salvarJogada().encode('utf-8'))
                 print("\nDeseja jogar novamente ?\n")
                 opcao = int(input("\nDigite 1 para jogar novamente, digite 2 para sair: "))
@@ -191,7 +190,7 @@ while opcaoGame == 1:
                 else:
                     break
             elif resposta != False:
-                tabuleiro.mostrarTabuleiro( name,empate, player1, player2,'VENCEU <<<<<<<<<<')
+                tabuleiro.mostrarTabuleiro( '>>>>>>>>>> VOCÊ ',empate, player1, player2,'VENCEU <<<<<<<<<<')
                 connection.sendall(tabuleiro.salvarJogada().encode('utf-8'))
                 print("\nDeseja jogar novamente ?\n")
                 opcao = int(input("\nDigite 1 para jogar novamente, digite 2 para sair: "))
@@ -228,7 +227,7 @@ while opcaoGame == 2:
         
         while cont == 0:
 
-            tabuleiro.mostrarTabuleiro('Jogador da vez >>>>>>  ', empate, player1, player2, name)
+            tabuleiro.mostrarTabuleiro('Sua vez de jogar  ', empate, player1, player2, '<<<<<<')
             print('\nFaça a sua jogada:')
             jogada = True
             while jogada:
@@ -251,7 +250,7 @@ while opcaoGame == 2:
             verificar = tabuleiro.verificarVencedor(player1[1])
             if verificar != False:
 
-                tabuleiro.mostrarTabuleiro(name, empate, player1, player2, 'VENCEU <<<<<<<<<<<<<')
+                tabuleiro.mostrarTabuleiro('>>>>>>>>>> VOCÊ ', empate, player1, player2, 'VENCEU <<<<<<<<<<<<<')
 
                 print("\nDeseja jogar novamente ?\n")
                 opcao = int(input("\nDigite 1 para jogar novamente, digite 2 para sair: "))
@@ -265,7 +264,7 @@ while opcaoGame == 2:
 
             emp = tabuleiro.realizarJogadaRandom(player2[1])
             if emp == True:
-                tabuleiro.mostrarTabuleiro('EMPATE', empate, player1, player2, '')
+                tabuleiro.mostrarTabuleiro('>>>>>>>>>> EMPATE', empate, player1, player2, '<<<<<<<<<<')
 
                 print("\nDeseja jogar novamente ?\n")
                 opcao = int(input("\nDigite 1 para jogar novamente, digite 2 para sair: \n"))

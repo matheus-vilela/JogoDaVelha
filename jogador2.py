@@ -6,20 +6,19 @@ HOST = '127.0.0.1'
 PORT = 5000       
 BUFFER_SIZE = 1024
 
-
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 server_address = (HOST, PORT)
-print('Conectando ao servidor {} na porta {}'.format(server_address[0], server_address[1]))
 sock.connect(server_address)
 
-
 os.system('cls' if os.name == 'nt' else 'clear')
-name = input('\n\nPara começar, informe o seu nome: ')
-os.system('cls' if os.name == 'nt' else 'clear')
+print('________________________________________________ ')
+print('JOGO DA VELHA')
+name = input('\nPara começar, informe o seu nome: ')
 sock.sendall('{}'.format(name).encode())
-print('Criando partida...')
 
+os.system('cls' if os.name == 'nt' else 'clear')
+print('Criando partida...')
 
 dados1 = sock.recv(BUFFER_SIZE)
 jogador1 = dados1.decode('utf-8').split('-')
@@ -43,7 +42,7 @@ while cont == 0:
         tabuleiro.restaurar(data.decode('utf-8'))
         resposta = tabuleiro.verificarVencedor(player1[1])
         if resposta == 'empate':
-            tabuleiro.mostrarTabuleiro( '>>>>>>>',empate, player1, player2,'EMPATE')
+            tabuleiro.mostrarTabuleiro( '>>>>>>>>>> ',empate, player1, player2,'EMPATE <<<<<<<<<<')
             print("\nDeseja jogar novamente ?\n")
             opcao = int(input("\nDigite 1 para jogar novamente, digite 2 para sair: "))
             sock.sendall('{}'.format(True if opcao == 1 else False).encode('utf-8'))
@@ -79,7 +78,7 @@ while cont == 0:
                 break
         
         else:
-            tabuleiro.mostrarTabuleiro('Jogador da vez >>>>>>  ', empate, player1, player2, name)
+            tabuleiro.mostrarTabuleiro('Sua vez de jogar ', empate, player1, player2, '<<<<<')
 
             posicao_valida = True
             while posicao_valida:
@@ -97,7 +96,7 @@ while cont == 0:
 
             resposta = tabuleiro.verificarVencedor(player2[1])
             if resposta == 'empate':
-                tabuleiro.mostrarTabuleiro( '>>>>>>>',empate, player1, player2,'EMPATE')
+                tabuleiro.mostrarTabuleiro( '>>>>>>>>>> ',empate, player1, player2,'EMPATE <<<<<<<<<<')
                 sock.sendall(tabuleiro.salvarJogada().encode('utf-8'))
                 print("\nDeseja jogar novamente ?\n")
                 opcao = int(input("\nDigite 1 para jogar novamente, digite 2 para sair: "))
@@ -116,7 +115,7 @@ while cont == 0:
                     break
             
             elif resposta != False:
-                tabuleiro.mostrarTabuleiro( name,empate, player1, player2,'VENCEU <<<<<<<<<<')
+                tabuleiro.mostrarTabuleiro( '>>>>>>>>>> VOCÊ',empate, player1, player2,'VENCEU <<<<<<<<<<')
             
                 sock.sendall(tabuleiro.salvarJogada().encode('utf-8'))
 
@@ -138,7 +137,7 @@ while cont == 0:
 
             else:
                 
-                tabuleiro.mostrarTabuleiro(jogador1[0],empate, player1, player2,'EMPATE')
+                tabuleiro.mostrarTabuleiro( '>>>>>>>>>> ',empate, player1, player2,'EMPATE <<<<<<<<<<')
                 sock.sendall(tabuleiro.salvarJogada().encode('utf-8'))
                 print('------------------')
                 print('Aguardando a jogada de {}.\n'.format(jogador1[0]))
