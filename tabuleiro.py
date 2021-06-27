@@ -1,5 +1,5 @@
 import numpy as np
-import os,time
+import os
 from random import *
 
 class Tabuleiro:
@@ -8,17 +8,17 @@ class Tabuleiro:
   
         self.tabuleiro = [[''] * 3 for n in range(3)]
 
-    # -------------------------------------------------
+    ###########################################################
     def salvarJogada(self):
 
         return '-'.join(['-'.join(x) for x in self.tabuleiro])
 
-    # -------------------------------------------------
+    ###########################################################
     def restaurar(self, data):
   
         self.tabuleiro = np.reshape(data.split('-'), (3,3)).tolist()
 
-       # -------------------------------------------------
+    ###########################################################
     def realizarJogada(self, linha, coluna, icone):
 
        
@@ -37,7 +37,7 @@ class Tabuleiro:
 
         return vencedor
 
-    # -------------------------------------------------
+    ###########################################################
     def realizarJogadaRandom(self, icone):
 
         opcoes = []
@@ -58,7 +58,7 @@ class Tabuleiro:
             empate = True
             return empate
 
-    # -------------------------------------------------
+    ###########################################################
     def verificarVencedor(self, icone):
 
         vitoria1 = self.tabuleiro[0][0] == self.tabuleiro[0][1] == self.tabuleiro[0][2] == icone
@@ -78,8 +78,7 @@ class Tabuleiro:
                 if self.tabuleiro[linha][coluna] == '':
                     opcoes.append((linha, coluna))
 
-        print('{} --- {}'.format(opcoes, posicoes))
-           
+          
         for vencedor in posicoes:
             if vencedor == True:
                 ganhou = icone
@@ -93,10 +92,7 @@ class Tabuleiro:
         return ganhou
 
 
-
-
-
-     # -------------------------------------------------
+    ###########################################################
     def mostrarTabuleiro(self, geral, empate,jogador1, jogador2, msg):
         # print('{}'.format(self.tabuleiro))
         os.system('cls' if os.name == 'nt' else 'clear')

@@ -218,8 +218,6 @@ while opcaoGame == 1:
 
 
 
-
-
 while opcaoGame == 2:
      
         tabuleiro = Tabuleiro()
